@@ -34,7 +34,7 @@ void loop(){
 //***** These pin numbers will probably not work with your hardware *****
 //pin 10 is connected to the DataIn
 //pin 8 is connected to the CLK
-//pin 9 is connected to LOAD
+//pin 9 is connected to LOAD (CS)
 //We have only a single MAX72XX.
 
 
@@ -44,9 +44,10 @@ LedControl lc=LedControl(10,8,9, NBR_MTX);
 
 
 // we always wait a bit between updates of the display
+//String scrollString= "How many displays will this text run over    ";
 String scrollString= "Setup    ";
 int stringLength=scrollString.length();
-char ch0, ch1, ch2, ch3;
+char ch0, ch1, ch2, ch3, ch4; //maybe remove ch4
 int nextCharIndex=0;
 
 
@@ -72,7 +73,8 @@ void setup() {
   ch1= scrollString[1];
   ch2= scrollString[2];
   ch3= scrollString[3];
-  nextCharIndex=4;
+  ch4= scrollString[4]; //maybe remove
+  nextCharIndex=5; //maybe 4
 }
 
 void loop(){
@@ -80,10 +82,12 @@ void loop(){
   lc.displayChar(1, lc.getCharArrayPosition(ch1));
   lc.displayChar(2, lc.getCharArrayPosition(ch2));
   lc.displayChar(3, lc.getCharArrayPosition(ch3));
+  lc.displayChar(4, lc.getCharArrayPosition(ch4)); //maybe remove
   ch0=ch1;
   ch1=ch2;
   ch2=ch3;
-  ch3=scrollString[nextCharIndex++];
+  ch3=ch4; //maybe remove
+  ch4=scrollString[nextCharIndex++]; //maybe ch3
   if (nextCharIndex>=stringLength) nextCharIndex=0;
   delay(300);
   lc.clearAll();

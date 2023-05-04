@@ -18,14 +18,14 @@ WiFiUDP Udp;
 
 //-----
 //your network name (SSID) and password (WPA)
-char ssid[] = "";    //Name of the internet connection        
-char pass[] = ""; //Password of the internet connection
+char ssid[] = "AndroidAP";    //Name of the internet connection        
+char pass[] = "sss22wbx"; //Password of the internet connection
 
 //local port to listen on
 int localPort = 3002;                               
 
 //IP and port for the server
-IPAddress serverIPAddress(192, 168, 0, 1); //IP address can be seen when running the node js server file (index.js) in the commando prompt. Write the IP address with comma's (,) instead of dot (.)
+IPAddress serverIPAddress(192, 168, 43, 63); //IP address can be seen when running the node js server file (index.js) in the commando prompt. Write the IP address with comma's (,) instead of dot (.)
 int serverPort = 3001;       
 //-----
 
@@ -55,16 +55,16 @@ bool writeTemp = true;
 //***** These pin numbers will probably not work with your hardware *****
 //pin 10 is connected to the DataIn
 //pin 8 is connected to the CLK
-//pin 9 is connected to LOAD
+//pin 9 is connected to LOAD (CS)
 //We have only a single MAX72XX.
 
-#define NBR_MTX 4
+#define NBR_MTX 5
 LedControl lc=LedControl(10,8,9, NBR_MTX);
 
 // we always wait a bit between updates of the display
-String scrollString = "Setup";
+String scrollString = "Setup    ";
 int stringLength=scrollString.length();
-char ch0, ch1, ch2, ch3;
+char ch0, ch1, ch2, ch3, ch4;
 int nextCharIndex=0;
 
 //setup: runs only once
@@ -139,10 +139,12 @@ void loop() {
   lc.displayChar(1, lc.getCharArrayPosition(ch1));
   lc.displayChar(2, lc.getCharArrayPosition(ch2));
   lc.displayChar(3, lc.getCharArrayPosition(ch3));
+  lc.displayChar(4, lc.getCharArrayPosition(ch4));
   ch0=ch1;
   ch1=ch2;
   ch2=ch3;
-  ch3=scrollString[nextCharIndex++];
+  ch3=ch4;
+  ch4=scrollString[nextCharIndex++];
   if (nextCharIndex>=stringLength) nextCharIndex=0;
   delay(300);
   lc.clearAll();
@@ -184,7 +186,8 @@ void listenForUDPMessage() {
     ch1= scrollString[1];
     ch2= scrollString[2];
     ch3= scrollString[3];
-    nextCharIndex=4;
+    ch4= scrollString[4];
+    nextCharIndex=5;
     
     //convert message value to int
     int messageValueAsInt = atoi(packetBuffer);
