@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
 using KyleDulce.SocketIo;
 
 public class IoT : MonoBehaviour
@@ -9,6 +11,9 @@ public class IoT : MonoBehaviour
     private string currentLEDValue = "0";
     private string currentPotValue = "0";
     private float potRotation = 0.0f;
+
+    [SerializeField]
+    List<string> displayList = new List<string>();
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +33,6 @@ public class IoT : MonoBehaviour
         //Connect to server
         socket.connect();
         Debug.Log("Socket IO - Connected");
-
 
 
         /*--------------               Receive Updates                                    ----------------------*/
@@ -73,6 +77,39 @@ public class IoT : MonoBehaviour
         //Rotate 3D Object
         potRotation = 50+float.Parse(currentPotValue)/4;
         this.transform.rotation = Quaternion.Euler(0.0f, potRotation, 0.0f);
+    }
+
+    public void SendText(Text textField) {
+        string submitText = textField.text.ToString();
+        //Emit new value to server
+        socket.emit("UpdateCurrentLEDValue", submitText);
+        Debug.Log("New value emitted to server: " + submitText);
+    }
+
+    public void SetToggles(Text label) {
+        string labelText = label.text.ToString();
+        
+        if(!displayList.Contains(labelText)) {
+            displayList.Add(labelText);
+        } else if (displayList.Contains(labelText)) {
+            displayList.Remove(labelText);
+        }
+        foreach(var x in displayList) {
+            Debug.Log("Array contains: " + x.ToString());
+        }
+        Debug.Log("End of List!");
+    }
+
+    public void SendList() {
+        if (displayList.Count >= 1) {
+            string jsonText = Newtonsoft.Json.JsonConvert.SerializeObject(displayList);
+            socket.emit("UpdateCurrentLEDValue", jsonText);
+            Debug.Log("List emitted to server: " + jsonText);
+        } else {
+            string noListMsg = "There are no elements in the list!";
+            socket.emit("UpdateCurrentLEDValue", noListMsg);
+            Debug.Log(noListMsg);
+        }
     }
 }
 
