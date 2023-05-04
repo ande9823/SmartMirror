@@ -41,7 +41,7 @@ console.log("Server IP-address: " + address + "\n");
 
 
 
-// ------------------------------ ARDUINO ------------------------------- //
+// ------------------------------ ARDUINO -------------------------------
 // ------------------------------ setup UDP (user datagram protocol) ------------------------------ 
 var UPD = require("dgram");
 var UDPsocket = UPD.createSocket('udp4');
@@ -64,7 +64,7 @@ UDPsocket.on('listening', function () {
     console.log('Server listening for UDP packets at port: ' + listenAtPort + "\n");
 });
 
-//on received message
+//on received message - Recieve data from Arduino
 UDPsocket.on('message', (msg, senderInfo) => {
     console.log("Received UDP message: " + msg);
     console.log("From addr: " + senderInfo.address + ", at port: " + senderInfo.port + "\n");
@@ -73,14 +73,15 @@ UDPsocket.on('message', (msg, senderInfo) => {
 
     arduinoIPAddress = senderInfo.address;
     arduinoPort = senderInfo.port;
-
+    
+    //Calls function which sends the potvalue to the potentiometer value to unity.
     EmitPotValue();
 
     //send acknowledgement message
     //sendUDPMessage(arduinoIPAddress, arduinoPort, "SERVER: The message was received");
 });
 
-//send UDP message (to Arduino from server)
+//send UDP message - Sends data to Arduino from server
 function sendUDPMessage(receiverIPAddress, receiverPort, message) {
     var UDPMessage = Buffer.from(message);
     UDPsocket.send(UDPMessage, receiverPort, receiverIPAddress, function (error) {
@@ -94,7 +95,7 @@ function sendUDPMessage(receiverIPAddress, receiverPort, message) {
 
 
 
-// ------------------------------ Unity ------------------------------- //
+// ------------------------------ Unity -------------------------------
 // ------------------------------ setup Socket.IO ------------------------------ 
 var io = require('socket.io')(server);
 
@@ -114,6 +115,7 @@ io.on('connection', function(IOsocket) {
 
         io.emit('CurrentLEDValue', currentLEDValue);
 
+        // <<<<< Sends data as last parameter to arduino >>>>>
         //If arduino, send LED value with UDP
         if (arduinoIPAddress != null && arduinoPort != null) {
             sendUDPMessage(arduinoIPAddress, arduinoPort, currentLEDValue)
