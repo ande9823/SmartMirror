@@ -41,7 +41,7 @@ console.log("Server IP-address: " + address + "\n");
 
 
 
-
+// ------------------------------ ARDUINO ------------------------------- //
 // ------------------------------ setup UDP (user datagram protocol) ------------------------------ 
 var UPD = require("dgram");
 var UDPsocket = UPD.createSocket('udp4');
@@ -80,7 +80,7 @@ UDPsocket.on('message', (msg, senderInfo) => {
     //sendUDPMessage(arduinoIPAddress, arduinoPort, "SERVER: The message was received");
 });
 
-//send UDP message
+//send UDP message (to Arduino from server)
 function sendUDPMessage(receiverIPAddress, receiverPort, message) {
     var UDPMessage = Buffer.from(message);
     UDPsocket.send(UDPMessage, receiverPort, receiverIPAddress, function (error) {
@@ -94,7 +94,7 @@ function sendUDPMessage(receiverIPAddress, receiverPort, message) {
 
 
 
-
+// ------------------------------ Unity ------------------------------- //
 // ------------------------------ setup Socket.IO ------------------------------ 
 var io = require('socket.io')(server);
 
@@ -118,6 +118,29 @@ io.on('connection', function(IOsocket) {
         if (arduinoIPAddress != null && arduinoPort != null) {
             sendUDPMessage(arduinoIPAddress, arduinoPort, currentLEDValue)
         }
+    });
+    
+    //on "UpdateTextField"
+    IOsocket.on('UpdateTextField', function (data) {
+        console.log("Current textfield Value received from client: " + data + "\n");
+        currentTextFieldValue = data;
+
+        io.emit('CurrentTextValue', currentTextFieldValue);
+
+        //Can send data to arduino with UDP Here like above.
+    });
+    
+    //on "UpdateToggleValues"
+    //Recieves data from unity through the function 'UpdateToggleValues'.
+    IOsocket.on('UpdateToggleValues', function (data) {
+        console.log("Current toggle Values received from client: " + data + "\n");
+        //Sets the value variable.
+        currentToggleValues = data;
+        //Sends the value variable to the website with the function 'CurrentToggleValue'.
+        io.emit('CurrentToggleValue', currentToggleValues);
+
+        
+        //Can send data to arduino with UDP Here like above.
     });
 });
 

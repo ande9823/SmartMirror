@@ -7,15 +7,22 @@
 	<script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
 </head>
 <body>
-	<!--Current LED and Potentiometer values, and set new LED value-->
+	<!--Current LED value, and set new LED value-->
 	<p>
 		Current LED value (<output name="" type="text" id="CurrentLEDValueField" value"readonly"></output>), new LED value:
 		<input id="newLEDValueField" type="text" onchange="UpdateLEDValue(this.value);">
 	</p>
 
-	<p>
-		Current Potentiometer value (<output name="" type="text" id="CurrentPotentiometerValueField" value"readonly"></output>)
-	</p>
+    <br/><br/><br/>
+    <h2>Unity Data</h2>
+    <br/>
+    <p>
+        Value sent from text field: (<output name="" type="text" id="TextValueField" value"readonly"></output>)
+    </p>
+    <br/>
+    <p>
+        List sent from toggle field: (<output name="" type="text" id="ToggleList" value"readonly"></output>)
+    </p>
 </body>
 </html>
 
@@ -44,14 +51,26 @@
         console.log("Current LED value received from server : " + data);
 		document.getElementById("CurrentLEDValueField").value = data;
 	});
-
+/*
 	//On "CurrentPotentiometerValue"
     socket.on("CurrentPotentiometerValue", function (data) {
         console.log("Current Potentiometer value received from server: " + data);
         document.getElementById("CurrentPotentiometerValueField").value = data;
     });
-
-
+*/
+    //On "CurrentTextValue"
+    //The function gets called on the server side and updates the value.
+    socket.on("CurrentTextValue", function (data) {
+        console.log("Current value from textfield received from server: " + data);
+        document.getElementById("TextValueField").value = data;
+    });
+    
+    //On "CurrentToggleValue"
+    //The function gets called on the server side and updates the value.
+    socket.on("CurrentToggleValue", function (data) {
+        console.log("Current list of toggles received from server: " + data);
+        document.getElementById("ToggleList").value = data;
+    });
 
 
 	//----------------- SOCKET IO - EMIT UPDATES

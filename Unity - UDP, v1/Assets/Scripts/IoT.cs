@@ -81,9 +81,9 @@ public class IoT : MonoBehaviour
 
     public void SendText(Text textField) {
         string submitText = textField.text.ToString();
-        //Emit new value to server
-        socket.emit("UpdateCurrentLEDValue", submitText);
-        Debug.Log("New value emitted to server: " + submitText);
+        //Sends new value to server with the function name "UpdateTextField".
+        socket.emit("UpdateTextField", submitText);
+        Debug.Log("New text emitted to server: " + submitText);
     }
 
     public void SetToggles(Text label) {
@@ -101,13 +101,15 @@ public class IoT : MonoBehaviour
     }
 
     public void SendList() {
-        if (displayList.Count >= 1) {
+        if (displayList.Count > 0) {
             string jsonText = Newtonsoft.Json.JsonConvert.SerializeObject(displayList);
-            socket.emit("UpdateCurrentLEDValue", jsonText);
+            //Sends new value to server with the function name "UpdateToggleValues".
+            socket.emit("UpdateToggleValues", jsonText);
             Debug.Log("List emitted to server: " + jsonText);
         } else {
             string noListMsg = "There are no elements in the list!";
-            socket.emit("UpdateCurrentLEDValue", noListMsg);
+            //Sends new value to server with the function name "UpdateToggleValues".
+            socket.emit("UpdateToggleValues", noListMsg);
             Debug.Log(noListMsg);
         }
     }
