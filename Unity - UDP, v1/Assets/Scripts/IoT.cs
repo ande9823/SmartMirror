@@ -9,9 +9,9 @@ public class IoT : MonoBehaviour
     Socket socket;
 
     private string currentLEDValue = "0";
-    private string currentPotValue = "0";
+   /* private string currentPotValue = "0";
     private float potRotation = 0.0f;
-
+    */
     private string currentTemperature = "0";
     private string currentHumidity = "0";
     public Text tempText;
@@ -44,10 +44,10 @@ public class IoT : MonoBehaviour
         /*--------------               Receive Updates                                    ----------------------*/
         //On "CurrentLEDValue"
         socket.on("CurrentLEDValue", SetCurrentLEDValue);
-
+        /*
         //On "CurrentPotentiometerValue"
         socket.on("CurrentPotentiometerValue", SetCurrentPotentiometerValue);
-
+        */
         //On "CurrentTemperature"
         socket.on("CurrentTemperature", SetCurrentTemperature);
 
@@ -60,13 +60,13 @@ public class IoT : MonoBehaviour
         currentLEDValue = data;
         Debug.Log("CurrentLEDValue Received: " + currentLEDValue);
     }
-
+    /*
     void SetCurrentPotentiometerValue(string data)
     {
         currentPotValue = data;
         Debug.Log("CurrentPotValue Received: " + currentPotValue);
     }
-
+    */
     void SetCurrentTemperature(string data) {
         currentTemperature = data;
         Debug.Log("Current Temp Received: " + currentTemperature);
@@ -97,10 +97,11 @@ public class IoT : MonoBehaviour
             socket.emit("UpdateCurrentLEDValue", currentLEDValue);
             Debug.Log("New LED value emitted to server: " + currentLEDValue);
         }
-
+        /*
         //Rotate 3D Object
         potRotation = 50+float.Parse(currentPotValue)/4;
         this.transform.rotation = Quaternion.Euler(0.0f, potRotation, 0.0f);
+        */
     }
 
     public void SendText(Text textField) {

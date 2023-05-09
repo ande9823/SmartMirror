@@ -6,7 +6,9 @@ var path = require('path');
 app.use(express.static(path.join(__dirname, '')));
 
 //server variables
+/*
 var currentPotValue = 0;
+*/
 var currentLEDValue = 0;
 
 //start server
@@ -69,17 +71,19 @@ UDPsocket.on('message', (msg, senderInfo) => {
     console.log("Received UDP message: " + msg);
     console.log("From addr: " + senderInfo.address + ", at port: " + senderInfo.port + "\n");
 
-    //recieve "temp,hum" which is split into more values?
+    //recieve "temp,hum" 
     currentTempHumValues = msg.toString();
+    /*
     //currentPotValue = msg.toString();
-
+*/
     arduinoIPAddress = senderInfo.address;
     arduinoPort = senderInfo.port;
     
-    //Calls function which sends the potvalue to the potentiometer value to unity.
+    //Calls function which sends the temp and humidity values to unity.
     EmitTempHumValues();
+    /*
     //EmitPotValue();
-
+*/
     //send acknowledgement message
     //sendUDPMessage(arduinoIPAddress, arduinoPort, "SERVER: The message was received");
 });
@@ -148,13 +152,14 @@ io.on('connection', function(IOsocket) {
         //Can send data to arduino with UDP Here like above.
     });
 });
-
+/*
 //emit "CurrentPotentiometerValue"
 function EmitPotValue() {
     io.emit('CurrentPotentiometerValue', currentPotValue);
 }
-
+*/
 function EmitTempHumValues() {
+    //splits the string sent from arduino into temp and humidity values and sends to unity.
     const splitArray = currentTempHumValues.split(",");
     var temp = splitArray[0];
     var hum = splitArray[1];

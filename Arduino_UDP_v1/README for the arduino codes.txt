@@ -1,8 +1,4 @@
-The Arduino_UDP_v1 file was only a test early on (will be changed when the other two files are done)
-
-Arduino_UDP_8x8 file in folder by same name is the arduino setup with the udp protocol.
-
-Arduino_8x8-Setup file in folder by same name is a setup and test of the 8x8 led matrices, where user can write in the console what is to be displayed.
+The Arduino_UDP_v1 file is the arduino setup with the udp protocol
 
 In the folders are the needed zip libraries for the specific electronic components, which might have to be imported under "Sketch" -> "Include Library" -> "Add .ZIP labrary..."
 Other Libraries can be found in the labrary manager:
@@ -10,6 +6,9 @@ Other Libraries can be found in the labrary manager:
 	WiFiNINA
 	WiFiUdp
 	LiquidCrystal
+As well as external libraries, which is in zip files:
+	LedControlMS (LedControl.zip) //8x8 led matrix
+	dht11 (adidax-dht11-b7fbbcd.zip) //temp & hum sensor
 
 Make sure to have downloaded "Arduino megaAVR Borads", as Arduino Uno Wifi Rev2 is under this pack. (Which is the one used for this project)
 Can be found under "Tools" -> "Board:" -> "Boards Manager..."
