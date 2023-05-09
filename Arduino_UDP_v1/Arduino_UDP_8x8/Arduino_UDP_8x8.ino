@@ -251,6 +251,12 @@ void DisplayTemp(){
     writeTemp = true;
     startMillis = currentMillis;
   }
+  char tempHumArray[64] = "";
+  strcat(tempHumArray, humArray);
+  strcat(tempHumArray, ",");
+  strcat(tempHumArray, tempArray);
+  
+  sendUDPMessage(serverIPAddress, serverPort, String(tempHumArray));
 }
 
 void readPotentiometer() {

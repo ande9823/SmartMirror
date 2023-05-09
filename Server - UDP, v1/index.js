@@ -69,13 +69,16 @@ UDPsocket.on('message', (msg, senderInfo) => {
     console.log("Received UDP message: " + msg);
     console.log("From addr: " + senderInfo.address + ", at port: " + senderInfo.port + "\n");
 
-    currentPotValue = msg.toString();
+    //recieve "temp,hum" which is split into more values?
+    currentTempHumValues = msg.toString();
+    //currentPotValue = msg.toString();
 
     arduinoIPAddress = senderInfo.address;
     arduinoPort = senderInfo.port;
     
     //Calls function which sends the potvalue to the potentiometer value to unity.
-    EmitPotValue();
+    EmitTempHumValues();
+    //EmitPotValue();
 
     //send acknowledgement message
     //sendUDPMessage(arduinoIPAddress, arduinoPort, "SERVER: The message was received");
@@ -149,4 +152,12 @@ io.on('connection', function(IOsocket) {
 //emit "CurrentPotentiometerValue"
 function EmitPotValue() {
     io.emit('CurrentPotentiometerValue', currentPotValue);
+}
+
+function EmitTempHumValues() {
+    const splitArray = currentTempHumValues.split(",");
+    var temp = splitArray[0];
+    var hum = splitArray[1];
+    io.emit('CurrentTemperature', temp);
+    io.emit('CurrentHumidity', hum);
 }

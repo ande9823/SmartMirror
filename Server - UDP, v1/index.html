@@ -12,6 +12,12 @@
 		Current LED value (<output name="" type="text" id="CurrentLEDValueField" value"readonly"></output>), new LED value:
 		<input id="newLEDValueField" type="text" onchange="UpdateLEDValue(this.value);">
 	</p>
+    <p>
+		Current Temperature: <output name="" type="text" id="CurrentTemp" value"readonly"></output>
+	</p>
+    <p>
+		Current Humidity: <output name="" type="text" id="CurrentHum" value"readonly"></output>
+	</p>
 
     <br/><br/><br/>
     <h2>Unity Data</h2>
@@ -50,6 +56,18 @@
 	socket.on("CurrentLEDValue", function (data) {
         console.log("Current LED value received from server : " + data);
 		document.getElementById("CurrentLEDValueField").value = data;
+	});
+    
+    //On "CurrentTemperature"
+	socket.on("CurrentTemperature", function (data) {
+        console.log("Current Temp value received from server : " + data);
+		document.getElementById("CurrentTemp").value = data;
+	});
+    
+    //On "CurrentHumidity"
+	socket.on("CurrentHumidity", function (data) {
+        console.log("Current Humidity value received from server : " + data);
+		document.getElementById("CurrentHum").value = data;
 	});
 /*
 	//On "CurrentPotentiometerValue"

@@ -12,6 +12,12 @@ public class IoT : MonoBehaviour
     private string currentPotValue = "0";
     private float potRotation = 0.0f;
 
+    private string currentTemperature = "0";
+    private string currentHumidity = "0";
+    public Text tempText;
+    public Text humText;
+
+
     [SerializeField]
     List<string> displayList = new List<string>();
 
@@ -41,6 +47,12 @@ public class IoT : MonoBehaviour
 
         //On "CurrentPotentiometerValue"
         socket.on("CurrentPotentiometerValue", SetCurrentPotentiometerValue);
+
+        //On "CurrentTemperature"
+        socket.on("CurrentTemperature", SetCurrentTemperature);
+
+        //On "CurrentHumidity"
+        socket.on("CurrentHumidity", SetCurrentHumidity);
     }
 
     void SetCurrentLEDValue(string data)
@@ -53,6 +65,18 @@ public class IoT : MonoBehaviour
     {
         currentPotValue = data;
         Debug.Log("CurrentPotValue Received: " + currentPotValue);
+    }
+
+    void SetCurrentTemperature(string data) {
+        currentTemperature = data;
+        Debug.Log("Current Temp Received: " + currentTemperature);
+        tempText.text = "Room Temperature: "+ currentTemperature;
+    }
+
+    void SetCurrentHumidity(string data) {
+        currentHumidity = data;
+        Debug.Log("Current Humidity Received: " + currentHumidity);
+        humText.text = "Room Humidity: " + currentHumidity;
     }
 
     void Update()
