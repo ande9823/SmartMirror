@@ -9,8 +9,8 @@
 <body>
 	<!--Current LED value, and set new LED value-->
 	<p>
-		Current LED value (<output name="" type="text" id="CurrentLEDValueField" value"readonly"></output>), new LED value:
-		<input id="newLEDValueField" type="text" onchange="UpdateLEDValue(this.value);">
+		Text that is sent to server (<output name="" type="text" id="TextValue" value"readonly"></output>), Send new text:
+		<input id="newTextField" type="text" onchange="UpdateText(this.value);">
 	</p>
     <p>
 		Current Temperature: <output name="" type="text" id="CurrentTemp" value"readonly"></output>
@@ -81,6 +81,7 @@
     socket.on("CurrentTextValue", function (data) {
         console.log("Current value from textfield received from server: " + data);
         document.getElementById("TextValueField").value = data;
+        document.getElementById("TextValue").value = data;
     });
     
     //On "CurrentToggleValue"
@@ -95,5 +96,9 @@
     function UpdateLEDValue(newLEDValue) {
 		console.log("New LED value emitted to server: " + newLEDValue);
         socket.emit("UpdateCurrentLEDValue", newLEDValue);
+	}
+    function UpdateText(newTextValue) {
+		console.log("New Text value emitted to server: " + newTextValue);
+        socket.emit("UpdateTextField", newTextValue);
 	}
 </script>

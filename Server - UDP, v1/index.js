@@ -136,7 +136,11 @@ io.on('connection', function(IOsocket) {
 
         io.emit('CurrentTextValue', currentTextFieldValue);
 
-        //Can send data to arduino with UDP Here like above.
+        // <<<<< Sends data as last parameter to arduino >>>>>
+        //If arduino, send LED value with UDP
+        if (arduinoIPAddress != null && arduinoPort != null) {
+            sendUDPMessage(arduinoIPAddress, arduinoPort, currentTextFieldValue)
+        }
     });
     
     //on "UpdateToggleValues"
@@ -161,8 +165,8 @@ function EmitPotValue() {
 function EmitTempHumValues() {
     //splits the string sent from arduino into temp and humidity values and sends to unity.
     const splitArray = currentTempHumValues.split(",");
-    var temp = splitArray[0];
-    var hum = splitArray[1];
+    var temp = splitArray[1];
+    var hum = splitArray[0];
     io.emit('CurrentTemperature', temp);
     io.emit('CurrentHumidity', hum);
 }

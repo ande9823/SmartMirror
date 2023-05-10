@@ -38,10 +38,10 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 //potentiometer
 int potPin = A0;
 int potValue;
-*/
+
 //LED
 int LEDPin = 6;
-
+*/
 //Millis setup
 unsigned long startMillis;  //some global variables available anywhere in the program
 unsigned long currentMillis;
@@ -72,9 +72,8 @@ void setup() {
   //set pinModes
   /*
   pinMode(potPin, INPUT);
-*/
   pinMode(LEDPin, OUTPUT);
-
+*/
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
 
@@ -173,11 +172,11 @@ void listenForUDPMessage() {
     //print message from packet
     Serial.print("\nReceived message: ");
     Serial.println(packetBuffer);
-
+/*
     //lcd update (Need to do something with scrolling or set text on multiple lines)
     lcd.clear();
     lcd.write(packetBuffer);
-
+*/
     // we always wait a bit between updates of the display
     scrollString = String(packetBuffer);
     stringLength=scrollString.length();
@@ -194,9 +193,11 @@ void listenForUDPMessage() {
     
     //convert message value to int
     int messageValueAsInt = atoi(packetBuffer);
-
+/*
     //set LED to received value
     setLEDTo(messageValueAsInt);
+*/
+    writeTemp = true;
 
     //send acknowledgement message
     //sendUDPMessage(Udp.remoteIP(), Udp.remotePort(), "ARDUINO: message was received");
@@ -229,38 +230,40 @@ void DisplayTemp(){
   
   char humString[4];
   itoa(DHT11.humidity, humString, 8);
-  //char humArray[32] = "Hummidity   (%): ";
   char humArray[32] = "Hum (%): ";
   strcat(humArray, humString);
+  lcd.setCursor(0,0);
   lcd.write(humArray);
-
+/*
   currentMillis = millis(); //milliseconds since the program started
   if (currentMillis - startMillis >= millisDelay){ //test whether the period has elapsed
-    lcd.clear();
-    
-    char tempString[4];
-    itoa(DHT11.temperature, tempString, 8);
-    //char tempArray[32] = "Temperature   (C): ";
-    char tempArray[32] = "Temp (C): ";
-    strcat(tempArray, tempString);
-    lcd.write(tempArray);
+    //lcd.clear();
+  */  
+  char tempString[4];
+  itoa(DHT11.temperature, tempString, 8);
+  char tempArray[32] = "Temp (C): ";
+  strcat(tempArray, tempString);
+  lcd.setCursor(0,1);
+  lcd.write(tempArray);
 
-    startMillis = currentMillis; //Resets the delay time
-  }
-
-  //Uses an extra delay
-  currentMillis = millis();
-  if (currentMillis - startMillis >= millisDelay){ 
-    writeTemp = true;
-    startMillis = currentMillis;
-  }
-  //Makes a char array with humidity and temp and sends values as one to server
+  //Makes a char array with humidity and temp and sends values as one continated string to server
   char tempHumArray[64] = "";
   strcat(tempHumArray, humArray);
   strcat(tempHumArray, ",");
   strcat(tempHumArray, tempArray);
   
   sendUDPMessage(serverIPAddress, serverPort, String(tempHumArray));
+
+  //startMillis = currentMillis; //Resets the delay time
+  //}
+
+  //Uses an extra delay
+  currentMillis = millis();
+  if (currentMillis - startMillis >= millisDelay){ 
+    writeTemp = true;
+    //startMillis = currentMillis;
+  }
+  
 }
 /*
 void readPotentiometer() {
@@ -275,9 +278,9 @@ void readPotentiometer() {
     sendUDPMessage(serverIPAddress, serverPort, String(potValue));
   }
 }*/
-
+/*
 void setLEDTo(int LEDValue) {
   Serial.print("set LED to: ");
   Serial.println(LEDValue);
   digitalWrite(LEDPin, LEDValue);
-}
+}*/

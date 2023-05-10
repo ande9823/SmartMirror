@@ -8,7 +8,7 @@ public class IoT : MonoBehaviour
     private bool runLocal = true;
     Socket socket;
 
-    private string currentLEDValue = "0";
+    //private string currentLEDValue = "0";
    /* private string currentPotValue = "0";
     private float potRotation = 0.0f;
     */
@@ -43,7 +43,7 @@ public class IoT : MonoBehaviour
 
         /*--------------               Receive Updates                                    ----------------------*/
         //On "CurrentLEDValue"
-        socket.on("CurrentLEDValue", SetCurrentLEDValue);
+        //socket.on("CurrentLEDValue", SetCurrentLEDValue);
         /*
         //On "CurrentPotentiometerValue"
         socket.on("CurrentPotentiometerValue", SetCurrentPotentiometerValue);
@@ -54,12 +54,12 @@ public class IoT : MonoBehaviour
         //On "CurrentHumidity"
         socket.on("CurrentHumidity", SetCurrentHumidity);
     }
-
+    /*
     void SetCurrentLEDValue(string data)
     {
         currentLEDValue = data;
         Debug.Log("CurrentLEDValue Received: " + currentLEDValue);
-    }
+    }*/
     /*
     void SetCurrentPotentiometerValue(string data)
     {
@@ -70,17 +70,18 @@ public class IoT : MonoBehaviour
     void SetCurrentTemperature(string data) {
         currentTemperature = data;
         Debug.Log("Current Temp Received: " + currentTemperature);
-        tempText.text = "Room Temperature: "+ currentTemperature;
+        tempText.text = currentTemperature;
     }
 
     void SetCurrentHumidity(string data) {
         currentHumidity = data;
         Debug.Log("Current Humidity Received: " + currentHumidity);
-        humText.text = "Room Humidity: " + currentHumidity;
+        humText.text = currentHumidity;
     }
 
     void Update()
     {
+        /*
         //On space - Update LED Value
         if (Input.GetKeyDown("space"))
         {
@@ -96,7 +97,7 @@ public class IoT : MonoBehaviour
             //Emit new value to server
             socket.emit("UpdateCurrentLEDValue", currentLEDValue);
             Debug.Log("New LED value emitted to server: " + currentLEDValue);
-        }
+        }*/
         /*
         //Rotate 3D Object
         potRotation = 50+float.Parse(currentPotValue)/4;
