@@ -16,18 +16,28 @@ int status = WL_IDLE_STATUS;
 //WiFiUDP object used for the communication
 WiFiUDP Udp;
 
-//-----
+
+
+
+//CHANGE THE NETWORK NAME AND CODE
 //your network name (SSID) and password (WPA)
-char ssid[] = "AndroidAP";    //Name of the internet connection        
-char pass[] = "sss22wbx"; //Password of the internet connection
+char ssid[] = "";    //Name of the internet connection        
+char pass[] = ""; //Password of the internet connection
 
 //local port to listen on
 int localPort = 3002;                               
 
+
+
+
 //IP and port for the server
-IPAddress serverIPAddress(192, 168, 43, 63); //IP address can be seen when running the node js server file (index.js) in the commando prompt. Write the IP address with comma's (,) instead of dot (.)
+//CHANGE THE IP ADDRESS
+IPAddress serverIPAddress(192, 168, 00, 00); //IP address can be seen when running the node js server file (index.js) in the commando prompt. Write the IP address with comma's (,) instead of dot (.)
 int serverPort = 3001;       
 //-----
+
+
+
 
 
 // initialize the library by associating any needed LCD interface pin
